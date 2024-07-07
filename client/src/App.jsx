@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Route, Routes, useNavigate } from "react-router-dom";
 
 import * as authService from "./services/authService";
-import AuthContext from "./contexts/authContext";
+import { AuthProvider } from "./contexts/authContext";
 import Path from "./paths";
 
 import Header from "./components/Header/Header";
@@ -52,7 +52,7 @@ function App() {
     isAuthenticated: !!auth.email,
   };
   return (
-    <AuthContext.Provider value={values}>
+    <AuthProvider value={values}>
       <div id="box">
         <Header />
 
@@ -66,7 +66,7 @@ function App() {
           <Route path={Path.Logout} element={<Logout />} />
         </Routes>
       </div>
-    </AuthContext.Provider>
+    </AuthProvider>
   );
 }
 
