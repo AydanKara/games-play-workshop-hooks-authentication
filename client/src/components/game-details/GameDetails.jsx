@@ -1,7 +1,8 @@
-import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import * as gameService from "../services/gameService";
-import * as commentService from "../services/commentService";
+import { useParams } from "react-router-dom";
+
+import * as gameService from "../../services/gameService";
+import * as commentService from "../../services/commentService";
 
 const GameDetails = () => {
   const { gameId } = useParams();
