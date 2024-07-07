@@ -1,10 +1,13 @@
-import { useEffect, useState } from "react";
+/* eslint-disable no-debugger */
+import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 import * as gameService from "../../services/gameService";
 import * as commentService from "../../services/commentService";
+import AuthContext from "../../contexts/authContext";
 
 const GameDetails = () => {
+  const { email } = useContext(AuthContext);
   const { gameId } = useParams();
   const [game, setGame] = useState({});
   const [comments, setComments] = useState([]);
@@ -17,15 +20,14 @@ const GameDetails = () => {
 
   const addCommentHandler = async (e) => {
     e.preventDefault();
-
     const formData = new FormData(e.currentTarget);
     const newComment = await commentService.create(
       gameId,
-      formData.get("username"),
       formData.get("comment")
     );
 
-    setComments((state) => [...state, newComment]);
+    setComments((state) => [...state, { ...newComment, owner: { email } }]);
+    console.log(comments)
   };
 
   return (
@@ -44,10 +46,10 @@ const GameDetails = () => {
           <h2>Comments:</h2>
           <ul>
             {/* list all comments for current game (If any) */}
-            {comments.map(({ username, text, _id }) => (
+            {comments.map(({ _id, text, owner: { email } }) => (
               <li key={_id} className="comment">
                 <p>
-                  {username}: {text}
+                  {email}: {text}
                 </p>
               </li>
             ))}
@@ -70,7 +72,6 @@ const GameDetails = () => {
       <article className="create-comment">
         <label>Add new comment:</label>
         <form className="form" onSubmit={addCommentHandler}>
-          <input type="text" name="username" placeholder="username" />
           <textarea
             name="comment"
             placeholder="Comment......"
