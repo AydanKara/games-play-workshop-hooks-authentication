@@ -16,3 +16,5 @@ export const register = (email, password) =>
     email,
     password,
   });
+
+export const logout = () => request.get(`${baseUrl}/logout`);

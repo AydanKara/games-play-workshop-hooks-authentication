@@ -5,6 +5,7 @@ const Path = {
   GameDetails: "/games/:gameId/details",
   Login: "/login",
   Register: "/register",
+  Logout: "/logout",
 };
 
 export default Path;
