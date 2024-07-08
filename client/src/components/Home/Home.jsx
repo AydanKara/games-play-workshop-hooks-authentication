@@ -1,4 +1,8 @@
-const Home = () => {
+/* eslint-disable react/prop-types */
+import withAuth from "../../HOC/withAuth";
+
+
+const Home = ({_id, accessToken, email}) => {
   return (
     <section id="welcome-world">
       <div className="welcome-message">
@@ -65,9 +69,12 @@ const Home = () => {
         </div>
         {/* Display paragraph: If there is no games  */}
         <p className="no-articles">No games yet</p>
+        <p>{email}</p>
       </div>
     </section>
   );
 };
 
-export default Home;
+const EnhancedHome = withAuth(Home)
+
+export default EnhancedHome;
