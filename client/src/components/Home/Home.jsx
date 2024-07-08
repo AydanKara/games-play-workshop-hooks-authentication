@@ -1,8 +1,15 @@
 /* eslint-disable react/prop-types */
 import withAuth from "../../HOC/withAuth";
+import LatestGame from "./latest-game/LatestGame";
+import * as gameService from "../../services/gameService";
+import { useEffect, useState } from "react";
 
+const Home = ({ email }) => {
+  const [latestGames, setLatestGames] = useState([]);
 
-const Home = ({_id, accessToken, email}) => {
+  useEffect(() => {
+    gameService.getLatest().then((result) => setLatestGames(result));
+  }, []);
   return (
     <section id="welcome-world">
       <div className="welcome-message">
@@ -13,68 +20,18 @@ const Home = ({_id, accessToken, email}) => {
       <div id="home-page">
         <h1>Latest Games</h1>
         {/* Display div: with information about every game (if any) */}
-        <div className="game">
-          <div className="image-wrap">
-            <img src="./images/CoverFire.png" />
-          </div>
-          <h3>Cover Fire</h3>
-          <div className="rating">
-            <span>☆</span>
-            <span>☆</span>
-            <span>☆</span>
-            <span>☆</span>
-            <span>☆</span>
-          </div>
-          <div className="data-buttons">
-            <a href="#" className="btn details-btn">
-              Details
-            </a>
-          </div>
-        </div>
-        <div className="game">
-          <div className="image-wrap">
-            <img src="./images/ZombieLang.png" />
-          </div>
-          <h3>Zombie Lang</h3>
-          <div className="rating">
-            <span>☆</span>
-            <span>☆</span>
-            <span>☆</span>
-            <span>☆</span>
-            <span>☆</span>
-          </div>
-          <div className="data-buttons">
-            <a href="#" className="btn details-btn">
-              Details
-            </a>
-          </div>
-        </div>
-        <div className="game">
-          <div className="image-wrap">
-            <img src="./images/MineCraft.png" />
-          </div>
-          <h3>MineCraft</h3>
-          <div className="rating">
-            <span>☆</span>
-            <span>☆</span>
-            <span>☆</span>
-            <span>☆</span>
-            <span>☆</span>
-          </div>
-          <div className="data-buttons">
-            <a href="#" className="btn details-btn">
-              Details
-            </a>
-          </div>
-        </div>
         {/* Display paragraph: If there is no games  */}
-        <p className="no-articles">No games yet</p>
+        {latestGames.map((game) => (
+          <LatestGame key={game._id} {...game} />
+        ))}
+
+        {!latestGames.length && <p className="no-articles">No games yet</p>}
         <p>{email}</p>
       </div>
     </section>
   );
 };
 
-const EnhancedHome = withAuth(Home)
+const EnhancedHome = withAuth(Home);
 
 export default EnhancedHome;
