@@ -15,7 +15,10 @@ const Logout = () => {
         logoutHandler();
         navigate(Path.Home);
       })
-      .catch(() => navigate(Path.Home));
+      .catch(() => {
+        logoutHandler();
+        navigate(Path.Home);
+      });
   }, [logoutHandler, navigate]);
   return null;
 };
